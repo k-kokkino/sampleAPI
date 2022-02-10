@@ -4,7 +4,7 @@
   </ImportGroup>
 
   <PropertyGroup Label="Package">
-    <PackageProjectUrl>https://github.com/kritikos-io/.config</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/kritikos-io/.config</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/k-kokkino/sampleAPI</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/k-kokkino/sampleAPI</RepositoryUrl>
   </PropertyGroup>
 </Project>
