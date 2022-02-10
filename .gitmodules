@@ -1,0 +1,4 @@
+[submodule ".config"]
+	path = .config
+	url = git@github.com:k-kokkino/.config.git
+	branch = master
