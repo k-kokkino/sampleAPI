@@ -1,4 +1,5 @@
 namespace Kkokkino.SampleAPI.Persistence.Model;
+
 using Kkokkino.SampleAPI.Persistence.Abstractions;
 
 public class Person : Entity<long>

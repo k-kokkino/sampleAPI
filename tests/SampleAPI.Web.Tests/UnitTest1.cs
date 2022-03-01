@@ -10,8 +10,8 @@ using Xunit;
 
 namespace SampleAPI.Web.Tests
 {
-    public class UnitTest1
-    {
+  public class UnitTest1
+  {
     [Fact]
     public async Task Test1()
     {
@@ -21,7 +21,6 @@ namespace SampleAPI.Web.Tests
       var person = await client.GetAsync("/api/person");
       var testvar = await person.Content.ReadAsStringAsync();
       var desertestvar = JsonConvert.DeserializeObject<Person[]>(testvar);
-
     }
   }
 }

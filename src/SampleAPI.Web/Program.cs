@@ -30,7 +30,7 @@ namespace SampleAPI.Web
 
       using (var loggerProvider = new SerilogLoggerProvider(Log.Logger))
       {
-          logger = loggerProvider.CreateLogger(nameof(Startup));
+        logger = loggerProvider.CreateLogger(nameof(Startup));
       }
 
       try
@@ -39,8 +39,8 @@ namespace SampleAPI.Web
         var configuration = host.Services.GetRequiredService<IConfiguration>();
         var environment = host.Services.GetRequiredService<IWebHostEnvironment>();
         Log.Logger = new LoggerConfiguration()
-            .CreateActualLogger(configuration, environment)
-            .CreateLogger();
+          .CreateActualLogger(configuration, environment)
+          .CreateLogger();
 
         logger = host.Services.GetRequiredService<ILogger<Startup>>();
         host.Run();
@@ -48,7 +48,8 @@ namespace SampleAPI.Web
       }
       catch (Exception e)
       {
-        logger.LogCritical(e, LogTemplates.UnhandledException, e.Message); // exception should be passed first in order to print stacktrace
+        logger.LogCritical(e, LogTemplates.UnhandledException,
+          e.Message); // exception should be passed first in order to print stacktrace
         // throw; gia na gyrisei to e xwris allagi stacktrace
         return 1;
       }
@@ -59,16 +60,16 @@ namespace SampleAPI.Web
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-              webBuilder.UseStartup<Startup>();
-            })
-            .UseSerilog();
+      Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+          webBuilder.UseStartup<Startup>();
+        })
+        .UseSerilog();
   }
 
   public static class LogTemplates
   {
-      public const string UnhandledException = "Unhandled exception: {Message}";
+    public const string UnhandledException = "Unhandled exception: {Message}";
   }
 }

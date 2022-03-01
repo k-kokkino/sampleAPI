@@ -18,7 +18,8 @@ namespace Kkokkino.SampleAPI.Web.Controllers
   {
     private BatchEmailService service;
 
-    public ServiceController(IEnumerable<IHostedService> services, PersistenceContext persistenceContext, ILogger<ServiceController> logger)
+    public ServiceController(IEnumerable<IHostedService> services, PersistenceContext persistenceContext,
+      ILogger<ServiceController> logger)
       : base(persistenceContext, logger)
     {
       service = services.OfType<BatchEmailService>().Single();

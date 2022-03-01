@@ -26,26 +26,26 @@ public class PersistenceContext : IdentityDbContext<SampleApiUser, SampleApiRole
 
     builder?.Entity<Person>(e =>
     {
-        // e.ToTable("people_dim");
-        e.HasKey(e => e.Id);
-        // e.HasKey(e => new{Id=e.Id,Name=e.Name}); COMPOSITE KEY
-        e.Property(e => e.Name).HasMaxLength(30); // Customize property
-      });
+      // e.ToTable("people_dim");
+      e.HasKey(e => e.Id);
+      // e.HasKey(e => new{Id=e.Id,Name=e.Name}); COMPOSITE KEY
+      e.Property(e => e.Name).HasMaxLength(30); // Customize property
+    });
 
     builder?.Entity<MovieRenters>(e =>
-   {
-     var personMovieRenterKey = "MovieId";
-     var moviePersonRenterKey = "PersonId";
+    {
+      var personMovieRenterKey = "MovieId";
+      var moviePersonRenterKey = "PersonId";
 
-     e.HasOne(e => e.Movie)
-     .WithMany()
-     .HasForeignKey(personMovieRenterKey);
+      e.HasOne(e => e.Movie)
+        .WithMany()
+        .HasForeignKey(personMovieRenterKey);
 
-     e.HasOne(e => e.Renter)
-     .WithMany()
-     .HasForeignKey(moviePersonRenterKey);
+      e.HasOne(e => e.Renter)
+        .WithMany()
+        .HasForeignKey(moviePersonRenterKey);
 
-     e.HasKey(personMovieRenterKey, moviePersonRenterKey);
-   });
+      e.HasKey(personMovieRenterKey, moviePersonRenterKey);
+    });
   }
 }

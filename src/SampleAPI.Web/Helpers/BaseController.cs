@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 public abstract class BaseController<T> : ControllerBase
   where T : BaseController<T>
 {
-
   protected BaseController(PersistenceContext persistenceContext, ILogger<T> logger)
   {
     Logger = logger;

@@ -11,7 +11,6 @@ namespace Kkokkino.SampleAPI.Persistence.Identity
     [ProtectedPersonalData] // This attribute encrypts transparently
     public string FirstName { get; set; }
 
-    [ProtectedPersonalData]
-    public string LastName { get; set; }
+    [ProtectedPersonalData] public string LastName { get; set; }
   }
 }

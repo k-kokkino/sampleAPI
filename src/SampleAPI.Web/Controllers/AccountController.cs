@@ -21,13 +21,13 @@ using Microsoft.IdentityModel.Tokens;
 
 [Route("api/account")]
 public class AccountController : BaseController<AccountController>
-  {
-
+{
   private const string PROTECTIONSTRING = "UserManagement";
 
-  public AccountController(PersistenceContext persistenceContext, ILogger<AccountController> logger, IDataProtectionProvider dataProtectionProvider,
+  public AccountController(PersistenceContext persistenceContext, ILogger<AccountController> logger,
+    IDataProtectionProvider dataProtectionProvider,
     UserManager<SampleApiUser> userManager, RoleManager<SampleApiRole> roleManager, IConfiguration configuration)
-      : base(persistenceContext, logger)
+    : base(persistenceContext, logger)
   {
     DataProtector = dataProtectionProvider.CreateProtector(PROTECTIONSTRING);
     UserManager = userManager;
@@ -42,15 +42,13 @@ public class AccountController : BaseController<AccountController>
   private RoleManager<SampleApiRole> RoleManager { get; }
 
   private IConfiguration Configuration { get; }
+
   [HttpPost("register")]
   public async Task<ActionResult> Register(RegisterDto dto)
   {
     var user = new SampleApiUser
     {
-      UserName = dto.Username,
-      Email = dto.Email,
-      FirstName = dto.FirstName,
-      LastName = dto.LastName,
+      UserName = dto.Username, Email = dto.Email, FirstName = dto.FirstName, LastName = dto.LastName,
     };
     var result = await UserManager.CreateAsync(user, dto.Password);
     if (result.Succeeded)
@@ -67,7 +65,7 @@ public class AccountController : BaseController<AccountController>
   public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
   {
     var user = await UserManager.FindByNameAsync(loginDto.Username)
-      ?? await UserManager.FindByEmailAsync(loginDto.Username);
+               ?? await UserManager.FindByEmailAsync(loginDto.Username);
     if (user == null || !(await UserManager.CheckPasswordAsync(user, loginDto.Password)))
     {
       return NotFound("No such user or wrong password.");
@@ -77,8 +75,7 @@ public class AccountController : BaseController<AccountController>
 
     var claims = new List<Claim>
     {
-      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-      new Claim(ClaimTypes.Name, user.UserName)
+      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), new Claim(ClaimTypes.Name, user.UserName)
     };
 
     claims.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)));
@@ -86,7 +83,8 @@ public class AccountController : BaseController<AccountController>
     var jwtToken = new JwtSecurityToken(
       issuer: Configuration["JWT:Issuer"],
       audience: Configuration["JWT:Audience"],
-      signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"])), SecurityAlgorithms.HmacSha256),
+      signingCredentials: new SigningCredentials(
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"])), SecurityAlgorithms.HmacSha256),
       claims: claims,
       expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(Configuration["JWT:ExpirationInMinutes"])));
 
@@ -98,5 +96,7 @@ public class AccountController : BaseController<AccountController>
 }
 
 public record LoginDto(string Username, string Password);
+
 public record UserDto(string Username, string Email, string Token);
+
 public record RegisterDto(string Username, string Email, string Password, string FirstName, string LastName);

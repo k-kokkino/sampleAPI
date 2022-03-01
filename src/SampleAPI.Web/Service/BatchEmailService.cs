@@ -15,6 +15,7 @@ namespace Kkokkino.SampleAPI.Web.Service
   using Microsoft.Extensions.Logging;
 
   using Refit;
+
   /// <summary>
   /// Scoped service demonstrating use of <see cref="CancellationToken"/>
   /// </summary>
@@ -34,7 +35,8 @@ namespace Kkokkino.SampleAPI.Web.Service
 
     public void Trigger() => tokenSource?.Cancel(); // Cancel a token source waking up the service - line 48
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken /* From Server */) => await Work(stoppingToken);
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken /* From Server */) =>
+      await Work(stoppingToken);
 
     private async Task Work(CancellationToken token)
     {
@@ -43,7 +45,9 @@ namespace Kkokkino.SampleAPI.Web.Service
         try
         {
           tokenSource = new CancellationTokenSource(); // My token source
-          using var syncedToken = CancellationTokenSource.CreateLinkedTokenSource(tokenSource.Token, token); // Links my and server token source
+          using var syncedToken =
+            CancellationTokenSource.CreateLinkedTokenSource(tokenSource.Token,
+              token); // Links my and server token source
 
           await Task.Delay(TimeSpan.FromMinutes(5), syncedToken.Token);
 

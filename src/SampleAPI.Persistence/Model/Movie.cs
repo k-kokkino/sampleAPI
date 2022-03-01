@@ -1,4 +1,5 @@
 namespace Kkokkino.SampleAPI.Persistence.Model;
+
 using System.Collections.Generic;
 
 using Kkokkino.SampleAPI.Persistence.Abstractions;

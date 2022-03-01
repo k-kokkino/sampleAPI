@@ -1,25 +1,25 @@
 namespace SampleAPI.Web;
 
-  using Kkokkino.SampleAPI.Persistence;
-  using Kkokkino.SampleAPI.Persistence.Identity;
-  using Kkokkino.SampleAPI.Web.Service;
+using Kkokkino.SampleAPI.Persistence;
+using Kkokkino.SampleAPI.Persistence.Identity;
+using Kkokkino.SampleAPI.Web.Service;
 
-  using Microsoft.AspNetCore.Authentication.JwtBearer;
-  using Microsoft.AspNetCore.Builder;
-  using Microsoft.AspNetCore.DataProtection;
-  using Microsoft.AspNetCore.Hosting;
-  using Microsoft.AspNetCore.Identity;
-  using Microsoft.EntityFrameworkCore;
-  using Microsoft.EntityFrameworkCore.Diagnostics;
-  using Microsoft.Extensions.Configuration;
-  using Microsoft.Extensions.DependencyInjection;
-  using Microsoft.Extensions.Hosting;
-  using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
-  using System;
-  using System.IO;
-  using System.Reflection;
-  using System.Text;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 public class Startup
 {
@@ -37,18 +37,18 @@ public class Startup
   public void ConfigureServices(IServiceCollection services)
   {
     services.AddDbContext<DataProtectionDbContext>(options => options
-    .UseNpgsql(Configuration.GetConnectionString("DataProtectionDb")));
+      .UseNpgsql(Configuration.GetConnectionString("DataProtectionDb")));
 
     services.AddDbContext<PersistenceContext>(options => options
-    .UseNpgsql(Configuration.GetConnectionString("SampleApiDb"), pgsql => pgsql
-    .EnableRetryOnFailure(3)
-    .SetPostgresVersion(13, 4))
-    .EnableDetailedErrors(Environment.IsDevelopment())
-    .EnableSensitiveDataLogging(Environment.IsDevelopment())
-    .ConfigureWarnings(warn => warn
-    .Ignore(CoreEventId.SensitiveDataLoggingEnabledWarning)
-    .Log(RelationalEventId.QueryPossibleUnintendedUseOfEqualsWarning)
-    .Throw(CoreEventId.CascadeDelete, CoreEventId.CascadeDeleteOrphan)));
+      .UseNpgsql(Configuration.GetConnectionString("SampleApiDb"), pgsql => pgsql
+        .EnableRetryOnFailure(3)
+        .SetPostgresVersion(13, 4))
+      .EnableDetailedErrors(Environment.IsDevelopment())
+      .EnableSensitiveDataLogging(Environment.IsDevelopment())
+      .ConfigureWarnings(warn => warn
+        .Ignore(CoreEventId.SensitiveDataLoggingEnabledWarning)
+        .Log(RelationalEventId.QueryPossibleUnintendedUseOfEqualsWarning)
+        .Throw(CoreEventId.CascadeDelete, CoreEventId.CascadeDeleteOrphan)));
 
     services.AddDataProtection()
       .SetApplicationName($"{Environment.ApplicationName}-{Environment.EnvironmentName}")
@@ -57,19 +57,19 @@ public class Startup
     services.AddHostedService<BatchEmailService>();
 
     services.AddIdentity<SampleApiUser, SampleApiRole>(options =>
-    {
-      var isDevelopment = Environment.IsDevelopment();
-      options.SignIn.RequireConfirmedAccount = !isDevelopment;
-      options.SignIn.RequireConfirmedEmail = !isDevelopment;
-      options.SignIn.RequireConfirmedPhoneNumber = false;
+      {
+        var isDevelopment = Environment.IsDevelopment();
+        options.SignIn.RequireConfirmedAccount = !isDevelopment;
+        options.SignIn.RequireConfirmedEmail = !isDevelopment;
+        options.SignIn.RequireConfirmedPhoneNumber = false;
 
-      options.User.RequireUniqueEmail = !isDevelopment;
+        options.User.RequireUniqueEmail = !isDevelopment;
 
-      options.Password.RequireDigit = !isDevelopment;
-      options.Password.RequireLowercase = !isDevelopment;
-      options.Password.RequireNonAlphanumeric = !isDevelopment;
-      options.Password.RequireUppercase = !isDevelopment;
-    })
+        options.Password.RequireDigit = !isDevelopment;
+        options.Password.RequireLowercase = !isDevelopment;
+        options.Password.RequireNonAlphanumeric = !isDevelopment;
+        options.Password.RequireUppercase = !isDevelopment;
+      })
       .AddEntityFrameworkStores<PersistenceContext>()
       .AddDefaultTokenProviders();
 
